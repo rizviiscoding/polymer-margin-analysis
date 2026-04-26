@@ -6,10 +6,20 @@
 
 <style>
 body { font-family: sans-serif; background:#f4f6f9; margin:0; }
-.header { background:#1e293b; color:white; padding:15px; text-align:center; font-size:20px; }
+
+.header {
+    background:#1e293b; color:white; padding:15px; text-align:center;
+    font-size:20px;
+}
+
+.topbar { text-align:center; padding:10px; background:white; }
 
 .container { display:flex; gap:15px; padding:15px; }
-.card { background:white; padding:15px; border-radius:10px; flex:1; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
+
+.card {
+    background:white; padding:15px; border-radius:10px; flex:1;
+    box-shadow:0 2px 6px rgba(0,0,0,0.1);
+}
 
 table { width:100%; }
 td { padding:6px; }
@@ -20,10 +30,13 @@ input, select {
 
 button {
     width:90%; margin:15px auto; display:block;
-    padding:12px; background:#2563eb; color:white; border:none; border-radius:8px;
+    padding:12px; background:#2563eb; color:white;
+    border:none; border-radius:8px;
 }
 
-.result { background:white; margin:10px; padding:15px; border-radius:10px; }
+.result {
+    background:white; margin:10px; padding:15px; border-radius:10px;
+}
 
 .green { color:green; font-weight:bold; }
 .red { color:red; font-weight:bold; }
@@ -38,128 +51,198 @@ button {
 
 <div class="header">Margin Analysis Pro</div>
 
+<div class="topbar">
+Mode:
+<select id="modeView" onchange="toggleMode()">
+<option value="single">Single</option>
+<option value="compare">Comparison</option>
+</select>
+</div>
+
 <div class="container">
 
+<!-- CUSTOMER A -->
 <div class="card">
-<h3>Input</h3>
-
+<h3>Customer A</h3>
 <table>
-<tr><td>RM Price</td><td><input id="rm"></td></tr>
-<tr><td>Discount</td><td><input id="disc"></td></tr>
+<tr><td>RM</td><td><input id="rmA"></td></tr>
+<tr><td>Discount</td><td><input id="discA"></td></tr>
 
-<tr><td>MB %</td><td><input id="mb"></td></tr>
-<tr><td>MB Price</td><td><input id="mbp"></td></tr>
+<tr><td>MB %</td><td><input id="mbA"></td></tr>
+<tr><td>MB Price</td><td><input id="mbpA"></td></tr>
 
-<tr><td>Filler %</td><td><input id="fp"></td></tr>
-<tr><td>Filler Price</td><td><input id="fpp"></td></tr>
+<tr><td>Filler %</td><td><input id="fpA"></td></tr>
+<tr><td>Filler Price</td><td><input id="fppA"></td></tr>
 
 <tr><td>Energy Mode</td>
 <td>
-<select id="mode">
+<select id="modeA">
 <option value="direct">₹/kg</option>
 <option value="mmbtu">MMBTU</option>
 </select>
 </td></tr>
 
-<tr><td>MMBTU/kg</td><td><input id="mmb"></td></tr>
-<tr><td>Rate</td><td><input id="rate"></td></tr>
-<tr><td>Elec ₹/kg</td><td><input id="elec"></td></tr>
+<tr><td>MMBTU</td><td><input id="mmbA"></td></tr>
+<tr><td>Rate</td><td><input id="rateA"></td></tr>
+<tr><td>Elec ₹/kg</td><td><input id="elecA"></td></tr>
 
-<tr><td>Labour</td><td><input id="lab"></td></tr>
-<tr><td>Packaging</td><td><input id="pack"></td></tr>
-<tr><td>Other</td><td><input id="other"></td></tr>
-<tr><td>Wastage</td><td><input id="wast"></td></tr>
+<tr><td>Labour</td><td><input id="labA"></td></tr>
+<tr><td>Pack</td><td><input id="packA"></td></tr>
+<tr><td>Other</td><td><input id="otherA"></td></tr>
+<tr><td>Wastage</td><td><input id="wastA"></td></tr>
 
-<tr><td>Fixed</td><td><input id="fix"></td></tr>
+<tr><td>Fixed</td><td><input id="fixA"></td></tr>
 
-<tr><td>Selling Price</td><td><input id="sp"></td></tr>
+<tr><td>Selling Price (₹/kg)</td><td><input id="spA"></td></tr>
+<tr><td>Weight per piece (kg)</td><td><input id="wtA"></td></tr>
 </table>
+</div>
 
+<!-- CUSTOMER B -->
+<div class="card" id="boxB">
+<h3>Customer B</h3>
+<table>
+<tr><td>RM</td><td><input id="rmB"></td></tr>
+<tr><td>Discount</td><td><input id="discB"></td></tr>
+
+<tr><td>MB %</td><td><input id="mbB"></td></tr>
+<tr><td>MB Price</td><td><input id="mbpB"></td></tr>
+
+<tr><td>Filler %</td><td><input id="fpB"></td></tr>
+<tr><td>Filler Price</td><td><input id="fppB"></td></tr>
+
+<tr><td>Energy Mode</td>
+<td>
+<select id="modeB">
+<option value="direct">₹/kg</option>
+<option value="mmbtu">MMBTU</option>
+</select>
+</td></tr>
+
+<tr><td>MMBTU</td><td><input id="mmbB"></td></tr>
+<tr><td>Rate</td><td><input id="rateB"></td></tr>
+<tr><td>Elec ₹/kg</td><td><input id="elecB"></td></tr>
+
+<tr><td>Labour</td><td><input id="labB"></td></tr>
+<tr><td>Pack</td><td><input id="packB"></td></tr>
+<tr><td>Other</td><td><input id="otherB"></td></tr>
+<tr><td>Wastage</td><td><input id="wastB"></td></tr>
+
+<tr><td>Fixed</td><td><input id="fixB"></td></tr>
+
+<tr><td>Selling Price (₹/kg)</td><td><input id="spB"></td></tr>
+<tr><td>Weight per piece (kg)</td><td><input id="wtB"></td></tr>
+</table>
 </div>
 
 </div>
 
-<button onclick="calc()">Calculate</button>
+<button onclick="runCalc()">Calculate</button>
 
-<div id="result" class="result"></div>
+<div id="resultA" class="result"></div>
+<div id="resultB" class="result"></div>
 
 <script>
 
-function calc(){
+function toggleMode(){
+    let mode = document.getElementById("modeView").value;
+    document.getElementById("boxB").style.display = (mode==="compare")?"block":"none";
+    document.getElementById("resultB").style.display = (mode==="compare")?"block":"none";
+}
 
-let rmv = +document.getElementById("rm").value || 0;
-let discv = +document.getElementById("disc").value || 0;
+function calculate(prefix){
 
-let mbv = +document.getElementById("mb").value || 0;
-let mbpv = +document.getElementById("mbp").value || 0;
+let rm = +document.getElementById("rm"+prefix).value||0;
+let disc = +document.getElementById("disc"+prefix).value||0;
 
-let fpv = +document.getElementById("fp").value || 0;
-let fppv = +document.getElementById("fpp").value || 0;
+let mb = +document.getElementById("mb"+prefix).value||0;
+let mbp = +document.getElementById("mbp"+prefix).value||0;
 
-let wastv = +document.getElementById("wast").value || 0;
+let fp = +document.getElementById("fp"+prefix).value||0;
+let fpp = +document.getElementById("fpp"+prefix).value||0;
 
-let base = rmv - discv;
+let base = rm - disc;
+let polymer = 100 - (mb + fp);
 
-// composition
-let polymer = 100 - (mbv + fpv);
-
-// COST BREAKDOWN
 let polymerCost = base * polymer/100;
-let mbCost = mbv/100 * mbpv;
-let fillerCost = fpv/100 * fppv;
+let mbCost = mb/100 * mbp;
+let fillerCost = fp/100 * fpp;
 
 let netRM = polymerCost + mbCost + fillerCost;
 
-// ENERGY
-let energy = (document.getElementById("mode").value === "mmbtu")
-    ? (+document.getElementById("mmb").value || 0) * (+document.getElementById("rate").value || 0)
-    : (+document.getElementById("elec").value || 0);
+let energy = document.getElementById("mode"+prefix).value==="mmbtu"
+? (+document.getElementById("mmb"+prefix).value||0) * (+document.getElementById("rate"+prefix).value||0)
+: (+document.getElementById("elec"+prefix).value||0);
 
-// VARIABLE COST
-let labour = +document.getElementById("lab").value || 0;
-let pack = +document.getElementById("pack").value || 0;
-let otherC = +document.getElementById("other").value || 0;
+let labour = +document.getElementById("lab"+prefix).value||0;
+let pack = +document.getElementById("pack"+prefix).value||0;
+let other = +document.getElementById("other"+prefix).value||0;
+let wast = +document.getElementById("wast"+prefix).value||0;
 
-let variable = energy + labour + pack + otherC + wastv;
+let variable = energy + labour + pack + other + wast;
 
-// TOTAL COST
-let fixed = +document.getElementById("fix").value || 0;
+let fixed = +document.getElementById("fix"+prefix).value||0;
 
 let totalCost = netRM + variable + fixed;
 
-// MARGIN
-let spv = +document.getElementById("sp").value || 0;
-let margin = spv - totalCost;
-let marginPct = spv ? (margin/spv*100) : 0;
+let sp = +document.getElementById("sp"+prefix).value||0;
+let wt = +document.getElementById("wt"+prefix).value||0;
 
-let color = margin>=0 ? "green":"red";
+let margin = sp - totalCost;
+let marginPct = sp ? margin/sp*100 : 0;
 
-// OUTPUT
-document.getElementById("result").innerHTML = `
-<b>--- RM Breakdown ---</b><br>
-Polymer Cost: ${polymerCost.toFixed(2)}<br>
-MB Cost: ${mbCost.toFixed(2)}<br>
-Filler Cost: ${fillerCost.toFixed(2)}<br>
-<b>Net RM Cost:</b> ${netRM.toFixed(2)}<br><br>
+let marginPiece = wt ? margin * wt : 0;
 
-<b>--- Variable Cost ---</b><br>
+let color = margin>=0?"green":"red";
+
+return {
+html: `
+<b>--- RM ---</b><br>
+Polymer: ${polymerCost.toFixed(2)}<br>
+MB: ${mbCost.toFixed(2)}<br>
+Filler: ${fillerCost.toFixed(2)}<br>
+Net RM: ${netRM.toFixed(2)}<br><br>
+
+<b>--- Variable ---</b><br>
 Energy: ${energy.toFixed(2)}<br>
 Labour: ${labour}<br>
-Packaging: ${pack}<br>
-Other: ${otherC}<br>
-Wastage: ${wastv}<br>
-<b>Total Variable:</b> ${variable.toFixed(2)}<br><br>
+Pack: ${pack}<br>
+Other: ${other}<br>
+Wastage: ${wast}<br>
+Total Variable: ${variable.toFixed(2)}<br><br>
 
-<b>Fixed Cost:</b> ${fixed}<br><br>
+<b>Fixed:</b> ${fixed}<br><br>
 
 <b>--- Final ---</b><br>
 Total Cost: ${totalCost.toFixed(2)}<br>
-Selling Price: ${spv}<br>
 Margin: <span class="${color}">${margin.toFixed(2)}</span><br>
-Margin %: ${marginPct.toFixed(2)}%
-`;
+Margin %: ${marginPct.toFixed(2)}%<br>
+Margin / Piece: ${marginPiece.toFixed(2)}
+`,
+margin
+};
 
 }
+
+function runCalc(){
+
+let A = calculate("A");
+document.getElementById("resultA").innerHTML = A.html;
+
+if(document.getElementById("modeView").value==="compare"){
+let B = calculate("B");
+document.getElementById("resultB").innerHTML = B.html;
+
+let diff = A.margin - B.margin;
+let better = diff>0?"Customer A better":"Customer B better";
+
+document.getElementById("resultB").innerHTML +=
+`<hr><b>Difference: ${diff.toFixed(2)}</b><br>${better}`;
+}
+
+}
+
+toggleMode();
 
 </script>
 
