@@ -87,55 +87,55 @@ button {
 
 function calc(){
 
-let rm = +rm.value||0;
-let disc = +disc.value||0;
+let rmv = +document.getElementById("rm").value || 0;
+let discv = +document.getElementById("disc").value || 0;
 
-let mb = +mb.value||0;
-let mbp = +mbp.value||0;
+let mbv = +document.getElementById("mb").value || 0;
+let mbpv = +document.getElementById("mbp").value || 0;
 
-let fp = +fp.value||0;
-let fpp = +fpp.value||0;
+let fpv = +document.getElementById("fp").value || 0;
+let fppv = +document.getElementById("fpp").value || 0;
 
-let wast = +wast.value||0;
+let wastv = +document.getElementById("wast").value || 0;
 
-let base = rm - disc;
+let base = rmv - discv;
 
 // composition
-let polymer = 100 - (mb + fp);
+let polymer = 100 - (mbv + fpv);
 
 // COST BREAKDOWN
 let polymerCost = base * polymer/100;
-let mbCost = mb/100 * mbp;
-let fillerCost = fp/100 * fpp;
+let mbCost = mbv/100 * mbpv;
+let fillerCost = fpv/100 * fppv;
 
 let netRM = polymerCost + mbCost + fillerCost;
 
 // ENERGY
-let energy = (mode.value === "mmbtu")
-    ? (+mmb.value||0) * (+rate.value||0)
-    : (+elec.value||0);
+let energy = (document.getElementById("mode").value === "mmbtu")
+    ? (+document.getElementById("mmb").value || 0) * (+document.getElementById("rate").value || 0)
+    : (+document.getElementById("elec").value || 0);
 
 // VARIABLE COST
-let labour = +lab.value||0;
-let pack = +pack.value||0;
-let otherC = +other.value||0;
+let labour = +document.getElementById("lab").value || 0;
+let pack = +document.getElementById("pack").value || 0;
+let otherC = +document.getElementById("other").value || 0;
 
-let variable = energy + labour + pack + otherC + wast;
+let variable = energy + labour + pack + otherC + wastv;
 
 // TOTAL COST
-let fixed = +fix.value||0;
+let fixed = +document.getElementById("fix").value || 0;
 
 let totalCost = netRM + variable + fixed;
 
 // MARGIN
-let spv = +sp.value||0;
+let spv = +document.getElementById("sp").value || 0;
 let margin = spv - totalCost;
 let marginPct = spv ? (margin/spv*100) : 0;
 
 let color = margin>=0 ? "green":"red";
 
 // OUTPUT
-result.innerHTML = `
+document.getElementById("result").innerHTML = `
 <b>--- RM Breakdown ---</b><br>
 Polymer Cost: ${polymerCost.toFixed(2)}<br>
 MB Cost: ${mbCost.toFixed(2)}<br>
@@ -147,7 +147,7 @@ Energy: ${energy.toFixed(2)}<br>
 Labour: ${labour}<br>
 Packaging: ${pack}<br>
 Other: ${otherC}<br>
-Wastage: ${wast}<br>
+Wastage: ${wastv}<br>
 <b>Total Variable:</b> ${variable.toFixed(2)}<br><br>
 
 <b>Fixed Cost:</b> ${fixed}<br><br>
