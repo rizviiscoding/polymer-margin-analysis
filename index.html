@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Margin Tool Pro</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background:#f5f5f5; }
+        h2 { text-align:center; }
+
+        .container { display:flex; gap:20px; }
+        .box { flex:1; background:white; padding:15px; border-radius:8px; }
+
+        table { width:100%; border-collapse: collapse; }
+        td { padding:6px; }
+        input, select { width:100%; }
+
+        .header { background:#ddd; font-weight:bold; }
+
+        button { margin:10px; padding:8px 15px; }
+
+        .result { background:white; padding:15px; margin-top:10px; border-radius:8px; }
+
+        .green { color:green; font-weight:bold; }
+        .red { color:red; font-weight:bold; }
+    </style>
+</head>
+
+<body>
+
+<h2>Margin Analysis Tool</h2>
+
+<div>
+    Mode:
+    <select id="viewMode" onchange="toggleMode()">
+        <option value="single">Single</option>
+        <option value="compare">Comparison</option>
+    </select>
+
+    <input id="scenarioName" placeholder="Scenario name">
+    <button onclick="saveScenario()">Save</button>
+    <select id="savedList" onchange="loadScenario()"></select>
+</div>
+
+<div class="container">
+
+<div class="box" id="boxA">
+<h3>Customer A</h3>
+<table border="1">
+<tr><td>RM</td><td><input id="rmA"></td></tr>
+<tr><td>Discount</td><td><input id="discA"></td></tr>
+<tr><td>MB %</td><td><input id="mbpA"></td></tr>
+<tr><td>MB Price</td><td><input id="mbpriceA"></td></tr>
+<tr><td>Filler %</td><td><input id="fpA"></td></tr>
+<tr><td>Filler Price</td><td><input id="fpriceA"></td></tr>
+
+<tr><td>Energy Mode</td>
+<td>
+<select id="modeA">
+<option value="direct" selected>₹/kg</option>
+<option value="mmbtu">MMBTU</option>
+</select>
+</td></tr>
+
+<tr><td>MMBTU</td><td><input id="mmbtuA"></td></tr>
+<tr><td>Rate</td><td><input id="rateA"></td></tr>
+<tr><td>Elec</td><td><input id="elecA"></td></tr>
+
+<tr><td>Labour</td><td><input id="labA"></td></tr>
+<tr><td>Pack</td><td><input id="packA"></td></tr>
+<tr><td>Other</td><td><input id="otherA"></td></tr>
+<tr><td>Fixed</td><td><input id="fixedA"></td></tr>
+
+<tr><td>SP</td><td><input id="spA"></td></tr>
+<tr><td>Weight</td><td><input id="wtA"></td></tr>
+</table>
+</div>
+
+<div class="box" id="boxB">
+<h3>Customer B</h3>
+<table border="1">
+<tr><td>RM</td><td><input id="rmB"></td></tr>
+<tr><td>Discount</td><td><input id="discB"></td></tr>
+<tr><td>MB %</td><td><input id="mbpB"></td></tr>
+<tr><td>MB Price</td><td><input id="mbpriceB"></td></tr>
+<tr><td>Filler %</td><td><input id="fpB"></td></tr>
+<tr><td>Filler Price</td><td><input id="fpriceB"></td></tr>
+
+<tr><td>Energy Mode</td>
+<td>
+<select id="modeB">
+<option value="direct" selected>₹/kg</option>
+<option value="mmbtu">MMBTU</option>
+</select>
+</td></tr>
+
+<tr><td>MMBTU</td><td><input id="mmbtuB"></td></tr>
+<tr><td>Rate</td><td><input id="rateB"></td></tr>
+<tr><td>Elec</td><td><input id="elecB"></td></tr>
+
+<tr><td>Labour</td><td><input id="labB"></td></tr>
+<tr><td>Pack</td><td><input id="packB"></td></tr>
+<tr><td>Other</td><td><input id="otherB"></td></tr>
+<tr><td>Fixed</td><td><input id="fixedB"></td></tr>
+
+<tr><td>SP</td><td><input id="spB"></td></tr>
+<tr><td>Weight</td><td><input id="wtB"></td></tr>
+</table>
+</div>
+
+</div>
+
+<button onclick="runCalc()">Calculate</button>
+
+<div id="resultA" class="result"></div>
+<div id="resultB" class="result"></div>
+
+<script>
+
+function toggleMode() {
+    let mode = viewMode.value;
+    boxB.style.display = mode === "compare" ? "block" : "none";
+    resultB.style.display = mode === "compare" ? "block" : "none";
+}
+
+function calc(prefix) {
+
+    let rm = +document.getElementById("rm"+prefix).value || 0;
+    let disc = +document.getElementById("disc"+prefix).value || 0;
+    let mbp = +document.getElementById("mbp"+prefix).value || 0;
+    let mbprice = +document.getElementById("mbprice"+prefix).value || 0;
+    let fp = +document.getElementById("fp"+prefix).value || 0;
+    let fprice = +document.getElementById("fprice"+prefix).value || 0;
+
+    let mmbtu = +document.getElementById("mmbtu"+prefix).value || 0;
+    let rate = +document.getElementById("rate"+prefix).value || 0;
+    let elec = +document.getElementById("elec"+prefix).value || 0;
+
+    let lab = +document.getElementById("lab"+prefix).value || 0;
+    let pack = +document.getElementById("pack"+prefix).value || 0;
+    let other = +document.getElementById("other"+prefix).value || 0;
+    let fixed = +document.getElementById("fixed"+prefix).value || 0;
+
+    let sp = +document.getElementById("sp"+prefix).value || 0;
+    let wt = +document.getElementById("wt"+prefix).value || 0;
+
+    let polymerPercent = 100 - (mbp + fp);
+
+    let polymerCost = (rm - disc) * polymerPercent / 100;
+    let mbCost = (mbp/100) * mbprice;
+    let fillerCost = (fp/100) * fprice;
+
+    let netRM = polymerCost + mbCost + fillerCost;
+
+    let energyCost = document.getElementById("mode"+prefix).value === "mmbtu"
+        ? mmbtu * rate
+        : elec;
+
+    let otherCost = lab + pack + other + fixed;
+
+    let totalCost = netRM + energyCost + otherCost;
+    let margin = sp - totalCost;
+    let marginPercent = sp ? (margin/sp*100) : 0;
+
+    let colorClass = margin >= 0 ? "green" : "red";
+
+    let output = `
+        <b>Polymer %:</b> ${polymerPercent.toFixed(2)}%<br>
+        <b>Polymer Cost:</b> ${polymerCost.toFixed(2)}<br>
+        <b>MB Cost:</b> ${mbCost.toFixed(2)}<br>
+        <b>Filler Cost:</b> ${fillerCost.toFixed(2)}<br>
+        <b>Net RM:</b> ${netRM.toFixed(2)}<br>
+        <b>Energy:</b> ${energyCost.toFixed(2)}<br>
+        <b>Other Cost:</b> ${otherCost.toFixed(2)}<br>
+        <b>Total Cost:</b> ${totalCost.toFixed(2)}<br>
+        <b>Margin:</b> <span class="${colorClass}">${margin.toFixed(2)}</span><br>
+        <b>Margin %:</b> ${marginPercent.toFixed(2)}%
+    `;
+
+    if (wt > 0) {
+        output += `<br><b>Margin/Piece:</b> ${(margin*wt).toFixed(2)}`;
+    }
+
+    return { html: output, totalCost, margin };
+}
+
+function runCalc() {
+
+    let A = calc("A");
+    resultA.innerHTML = A.html;
+
+    if (viewMode.value === "compare") {
+        let B = calc("B");
+        resultB.innerHTML = B.html;
+
+        let diff = A.margin - B.margin;
+        let better = diff > 0 ? "Customer A better" : "Customer B better";
+
+        resultB.innerHTML += `
+            <hr>
+            <b>Margin Difference:</b> ${diff.toFixed(2)}<br>
+            <b>${better}</b>
+        `;
+    }
+}
+
+// SAVE / LOAD
+
+function saveScenario() {
+    let name = scenarioName.value;
+    if (!name) return alert("Enter name");
+
+    let data = {};
+    document.querySelectorAll("input").forEach(i => data[i.id] = i.value);
+
+    localStorage.setItem(name, JSON.stringify(data));
+    loadList();
+}
+
+function loadList() {
+    savedList.innerHTML = "<option>Select</option>";
+    for (let i=0;i<localStorage.length;i++) {
+        let key = localStorage.key(i);
+        savedList.innerHTML += `<option>${key}</option>`;
+    }
+}
+
+function loadScenario() {
+    let name = savedList.value;
+    let data = JSON.parse(localStorage.getItem(name));
+    for (let key in data) {
+        if (document.getElementById(key))
+            document.getElementById(key).value = data[key];
+    }
+}
+
+loadList();
+toggleMode();
+
+</script>
+
+</body>
+</html>
