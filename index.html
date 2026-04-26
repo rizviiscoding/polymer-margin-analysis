@@ -2,103 +2,35 @@
 <html>
 <head>
 <title>Margin Analysis Pro</title>
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+body { font-family: sans-serif; background:#f4f6f9; margin:0; }
+.header { background:#1e293b; color:white; padding:15px; text-align:center; font-size:20px; }
 
-body {
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    background: #f4f6f9;
-    margin: 0;
+.container { display:flex; gap:15px; padding:15px; }
+.card { background:white; padding:15px; border-radius:10px; flex:1; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
+
+table { width:100%; }
+td { padding:6px; }
+
+input, select {
+    width:100%; padding:8px; border-radius:6px; border:1px solid #ccc;
 }
 
-/* HEADER */
-.header {
-    background: #1e293b;
-    color: white;
-    padding: 15px;
-    text-align: center;
-    font-size: 20px;
-    font-weight: bold;
-}
-
-/* MODE SWITCH */
-.topbar {
-    padding: 10px;
-    text-align: center;
-    background: white;
-}
-
-select, input {
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    width: 100%;
-    font-size: 14px;
-}
-
-/* LAYOUT */
-.container {
-    display: flex;
-    gap: 15px;
-    padding: 15px;
-}
-
-/* CARD */
-.card {
-    background: white;
-    border-radius: 12px;
-    padding: 15px;
-    flex: 1;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-}
-
-.card h3 {
-    margin-top: 0;
-    font-size: 18px;
-}
-
-/* TABLE */
-table {
-    width: 100%;
-}
-
-td {
-    padding: 6px;
-}
-
-/* BUTTON */
 button {
-    width: 90%;
-    margin: 15px auto;
-    display: block;
-    padding: 12px;
-    background: #2563eb;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-size: 16px;
+    width:90%; margin:15px auto; display:block;
+    padding:12px; background:#2563eb; color:white; border:none; border-radius:8px;
 }
 
-/* RESULT */
-.result {
-    background: white;
-    margin: 10px;
-    padding: 15px;
-    border-radius: 10px;
+.result { background:white; margin:10px; padding:15px; border-radius:10px; }
+
+.green { color:green; font-weight:bold; }
+.red { color:red; font-weight:bold; }
+
+@media(max-width:768px){
+    .container { flex-direction:column; }
 }
-
-.green { color: #16a34a; font-weight: bold; }
-.red { color: #dc2626; font-weight: bold; }
-
-/* MOBILE */
-@media (max-width: 768px) {
-    .container {
-        flex-direction: column;
-    }
-}
-
 </style>
 </head>
 
@@ -106,155 +38,128 @@ button {
 
 <div class="header">Margin Analysis Pro</div>
 
-<div class="topbar">
-Mode:
-<select id="modeView" onchange="toggleMode()">
-<option value="single">Single</option>
-<option value="compare">Comparison</option>
-</select>
-</div>
-
 <div class="container">
 
-<!-- CUSTOMER A -->
-<div class="card" id="boxA">
-<h3>Customer A</h3>
-<table>
+<div class="card">
+<h3>Input</h3>
 
-<tr><td>RM</td><td><input id="rmA"></td></tr>
-<tr><td>Discount</td><td><input id="discA"></td></tr>
-<tr><td>MB %</td><td><input id="mbA"></td></tr>
-<tr><td>MB Price</td><td><input id="mbpA"></td></tr>
-<tr><td>Filler %</td><td><input id="fpA"></td></tr>
-<tr><td>Filler Price</td><td><input id="fppA"></td></tr>
+<table>
+<tr><td>RM Price</td><td><input id="rm"></td></tr>
+<tr><td>Discount</td><td><input id="disc"></td></tr>
+
+<tr><td>MB %</td><td><input id="mb"></td></tr>
+<tr><td>MB Price</td><td><input id="mbp"></td></tr>
+
+<tr><td>Filler %</td><td><input id="fp"></td></tr>
+<tr><td>Filler Price</td><td><input id="fpp"></td></tr>
 
 <tr><td>Energy Mode</td>
 <td>
-<select id="emA">
+<select id="mode">
 <option value="direct">₹/kg</option>
 <option value="mmbtu">MMBTU</option>
 </select>
 </td></tr>
 
-<tr><td>MMBTU</td><td><input id="mmbA"></td></tr>
-<tr><td>Rate</td><td><input id="rateA"></td></tr>
-<tr><td>Elec</td><td><input id="elecA"></td></tr>
+<tr><td>MMBTU/kg</td><td><input id="mmb"></td></tr>
+<tr><td>Rate</td><td><input id="rate"></td></tr>
+<tr><td>Elec ₹/kg</td><td><input id="elec"></td></tr>
 
-<tr><td>Labour</td><td><input id="labA"></td></tr>
-<tr><td>Pack</td><td><input id="packA"></td></tr>
-<tr><td>Other</td><td><input id="otherA"></td></tr>
-<tr><td>Fixed</td><td><input id="fixA"></td></tr>
+<tr><td>Labour</td><td><input id="lab"></td></tr>
+<tr><td>Packaging</td><td><input id="pack"></td></tr>
+<tr><td>Other</td><td><input id="other"></td></tr>
+<tr><td>Wastage</td><td><input id="wast"></td></tr>
 
-<tr><td>Selling Price</td><td><input id="spA"></td></tr>
-<tr><td>Weight</td><td><input id="wtA"></td></tr>
+<tr><td>Fixed</td><td><input id="fix"></td></tr>
 
+<tr><td>Selling Price</td><td><input id="sp"></td></tr>
 </table>
-</div>
 
-<!-- CUSTOMER B -->
-<div class="card" id="boxB">
-<h3>Customer B</h3>
-<table>
-
-<tr><td>RM</td><td><input id="rmB"></td></tr>
-<tr><td>Discount</td><td><input id="discB"></td></tr>
-<tr><td>MB %</td><td><input id="mbB"></td></tr>
-<tr><td>MB Price</td><td><input id="mbpB"></td></tr>
-<tr><td>Filler %</td><td><input id="fpB"></td></tr>
-<tr><td>Filler Price</td><td><input id="fppB"></td></tr>
-
-<tr><td>Energy Mode</td>
-<td>
-<select id="emB">
-<option value="direct">₹/kg</option>
-<option value="mmbtu">MMBTU</option>
-</select>
-</td></tr>
-
-<tr><td>MMBTU</td><td><input id="mmbB"></td></tr>
-<tr><td>Rate</td><td><input id="rateB"></td></tr>
-<tr><td>Elec</td><td><input id="elecB"></td></tr>
-
-<tr><td>Labour</td><td><input id="labB"></td></tr>
-<tr><td>Pack</td><td><input id="packB"></td></tr>
-<tr><td>Other</td><td><input id="otherB"></td></tr>
-<tr><td>Fixed</td><td><input id="fixB"></td></tr>
-
-<tr><td>Selling Price</td><td><input id="spB"></td></tr>
-<tr><td>Weight</td><td><input id="wtB"></td></tr>
-
-</table>
 </div>
 
 </div>
 
-<button onclick="runCalc()">Calculate</button>
+<button onclick="calc()">Calculate</button>
 
-<div id="resultA" class="result"></div>
-<div id="resultB" class="result"></div>
+<div id="result" class="result"></div>
 
 <script>
 
-function toggleMode() {
-    let mode = modeView.value;
-    boxB.style.display = (mode === "compare") ? "block" : "none";
-    resultB.style.display = (mode === "compare") ? "block" : "none";
+function calc(){
+
+let rm = +rm.value||0;
+let disc = +disc.value||0;
+
+let mb = +mb.value||0;
+let mbp = +mbp.value||0;
+
+let fp = +fp.value||0;
+let fpp = +fpp.value||0;
+
+let wast = +wast.value||0;
+
+let base = rm - disc;
+
+// composition
+let polymer = 100 - (mb + fp);
+
+// COST BREAKDOWN
+let polymerCost = base * polymer/100;
+let mbCost = mb/100 * mbp;
+let fillerCost = fp/100 * fpp;
+
+let netRM = polymerCost + mbCost + fillerCost;
+
+// ENERGY
+let energy = (mode.value === "mmbtu")
+    ? (+mmb.value||0) * (+rate.value||0)
+    : (+elec.value||0);
+
+// VARIABLE COST
+let labour = +lab.value||0;
+let pack = +pack.value||0;
+let otherC = +other.value||0;
+
+let variable = energy + labour + pack + otherC + wast;
+
+// TOTAL COST
+let fixed = +fix.value||0;
+
+let totalCost = netRM + variable + fixed;
+
+// MARGIN
+let spv = +sp.value||0;
+let margin = spv - totalCost;
+let marginPct = spv ? (margin/spv*100) : 0;
+
+let color = margin>=0 ? "green":"red";
+
+// OUTPUT
+result.innerHTML = `
+<b>--- RM Breakdown ---</b><br>
+Polymer Cost: ${polymerCost.toFixed(2)}<br>
+MB Cost: ${mbCost.toFixed(2)}<br>
+Filler Cost: ${fillerCost.toFixed(2)}<br>
+<b>Net RM Cost:</b> ${netRM.toFixed(2)}<br><br>
+
+<b>--- Variable Cost ---</b><br>
+Energy: ${energy.toFixed(2)}<br>
+Labour: ${labour}<br>
+Packaging: ${pack}<br>
+Other: ${otherC}<br>
+Wastage: ${wast}<br>
+<b>Total Variable:</b> ${variable.toFixed(2)}<br><br>
+
+<b>Fixed Cost:</b> ${fixed}<br><br>
+
+<b>--- Final ---</b><br>
+Total Cost: ${totalCost.toFixed(2)}<br>
+Selling Price: ${spv}<br>
+Margin: <span class="${color}">${margin.toFixed(2)}</span><br>
+Margin %: ${marginPct.toFixed(2)}%
+`;
+
 }
-
-function calc(p) {
-
-    let rm = +document.getElementById("rm"+p).value || 0;
-    let disc = +document.getElementById("disc"+p).value || 0;
-    let mb = +document.getElementById("mb"+p).value || 0;
-    let mbp = +document.getElementById("mbp"+p).value || 0;
-    let fp = +document.getElementById("fp"+p).value || 0;
-    let fpp = +document.getElementById("fpp"+p).value || 0;
-
-    let energy = document.getElementById("em"+p).value === "mmbtu"
-        ? (+document.getElementById("mmb"+p).value || 0) * (+document.getElementById("rate"+p).value || 0)
-        : (+document.getElementById("elec"+p).value || 0);
-
-    let other = (+document.getElementById("lab"+p).value || 0)
-        + (+document.getElementById("pack"+p).value || 0)
-        + (+document.getElementById("other"+p).value || 0)
-        + (+document.getElementById("fix"+p).value || 0);
-
-    let polymer = 100 - (mb + fp);
-    let polymerCost = (rm - disc) * polymer/100;
-    let mbCost = mb/100 * mbp;
-    let fillerCost = fp/100 * fpp;
-
-    let total = polymerCost + mbCost + fillerCost + energy + other;
-    let sp = +document.getElementById("sp"+p).value || 0;
-    let margin = sp - total;
-
-    let color = margin >= 0 ? "green" : "red";
-
-    return {
-        html: `
-        <b>Total Cost:</b> ${total.toFixed(2)}<br>
-        <b>Margin:</b> <span class="${color}">${margin.toFixed(2)}</span><br>
-        <b>Margin %:</b> ${(sp ? margin/sp*100 : 0).toFixed(2)}%
-        `,
-        margin
-    };
-}
-
-function runCalc() {
-
-    let A = calc("A");
-    resultA.innerHTML = A.html;
-
-    if (modeView.value === "compare") {
-        let B = calc("B");
-        resultB.innerHTML = B.html;
-
-        let better = A.margin > B.margin ? "Customer A better" : "Customer B better";
-        resultB.innerHTML += "<hr><b>"+better+"</b>";
-    }
-}
-
-toggleMode();
 
 </script>
 
